@@ -1,59 +1,572 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Aplikasi Apotek Terintegrasi
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen data apotek berbasis web yang dibangun dengan **Laravel 12**. Aplikasi ini mengelola tiga data utama, yaitu **Pelanggan**, **Staf Apotek**, dan **Daftar Obat**, serta menyediakan **REST API** yang dapat diuji melalui **Postman**.
 
-## About Laravel
+Proyek ini disusun untuk memenuhi Tugas Kelompok mata kuliah Sistem Terintegrasi.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Informasi Proyek
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Keterangan | Isi |
+|---|---|
+| Mata Kuliah | Sistem Terintegrasi |
+| Kelas | TRKJ 2C |
+| Dosen Pengampu | Hari Toha Hidayat |
+| Tahun | 2026 |
+| Kelompok | [ISI NOMOR KELOMPOK] |
 
-## Learning Laravel
+## Anggota Kelompok
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+| No | Nama Lengkap | NIM |
+|---|---|---|
+| 1 | [ISI NAMA ANGGOTA 1] | [ISI NIM] |
+| 2 | [ISI NAMA ANGGOTA 2] | [ISI NIM] |
+| 3 | [ISI NAMA ANGGOTA 3] | [ISI NIM] |
+| 4 | [ISI NAMA ANGGOTA 4] | [ISI NIM] |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Daftar Isi
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. [Deskripsi Aplikasi](#deskripsi-aplikasi)
+2. [Fitur](#fitur)
+3. [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+4. [Struktur Database](#struktur-database)
+5. [Struktur Folder](#struktur-folder)
+6. [Prasyarat](#prasyarat)
+7. [Instalasi dan Menjalankan Aplikasi](#instalasi-dan-menjalankan-aplikasi)
+8. [Penggunaan Aplikasi Web](#penggunaan-aplikasi-web)
+9. [Dokumentasi API dan Pengujian Postman](#dokumentasi-api-dan-pengujian-postman)
+10. [Seeder (Data Contoh)](#seeder-data-contoh)
+11. [Panduan Mengisi Identitas Anggota](#panduan-mengisi-identitas-anggota)
+12. [Pemecahan Masalah](#pemecahan-masalah)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Deskripsi Aplikasi
 
-## Contributing
+Aplikasi ini menggantikan pencatatan manual di apotek dengan sistem terkomputerisasi. Data disimpan di database relasional (MariaDB/MySQL) dan dapat diakses dengan dua cara:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Antarmuka web** (Blade + Bootstrap) untuk pengguna sehari-hari.
+2. **REST API** (format JSON) untuk integrasi dengan sistem lain dan pengujian melalui Postman.
 
-## Code of Conduct
+Kedua cara tersebut memakai controller, model, dan database yang sama, sehingga data yang diubah lewat web langsung terlihat di API dan sebaliknya. Inilah bentuk sederhana dari integrasi sistem pada proyek ini.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Fitur
 
-## Security Vulnerabilities
+**Modul Pelanggan**
+- Menyimpan data pelanggan (nama, alamat, nomor HP).
+- Menampilkan dan menghapus data pelanggan.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Modul Staf Apotek**
+- Menyimpan data staf (nama, alamat, tanggal lahir, tempat lahir, nomor HP).
+- Menampilkan dan menghapus data staf.
 
-## License
+**Modul Daftar Obat**
+- Menyimpan data obat (kode obat, nama obat, stok, tanggal kadaluarsa).
+- Kode obat bersifat unik, sehingga tidak ada kode yang ganda.
+- Obat yang sudah melewati tanggal kadaluarsa otomatis ditandai dengan warna merah pada tabel.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Umum**
+- Validasi input pada sisi server, dengan pesan kesalahan yang ditampilkan di web dan dikirim sebagai JSON pada API.
+- API lengkap dengan operasi CRUD (Create, Read, Update, Delete) untuk ketiga modul.
+- Seeder untuk mengisi data contoh secara otomatis.
+- Koleksi Postman siap pakai pada folder `postman`.
+
+## Teknologi yang Digunakan
+
+| Komponen | Teknologi |
+|---|---|
+| Framework | Laravel 12 |
+| Bahasa | PHP (kompatibel 8.2 sampai 8.5) |
+| Database | MariaDB / MySQL |
+| Antarmuka | Blade Template dan Bootstrap 5 (CDN) |
+| Pengujian API | Postman |
+| Manajemen versi | Git dan GitHub |
+| Manajemen paket | Composer |
+
+Proyek ini sengaja memakai Laravel 12 dan mengunci platform PHP ke versi 8.2 pada `composer.json`. Dengan begitu, aplikasi tetap dapat dijalankan di komputer yang memakai PHP 8.2, 8.3, 8.4, maupun 8.5. Laravel 13 membutuhkan PHP 8.3 ke atas, sehingga tidak dipilih agar kompatibel dengan semua anggota kelompok.
+
+## Struktur Database
+
+Nama database: `db_apotek`
+
+### Tabel `pelanggan`
+
+| Kolom | Tipe | Keterangan |
+|---|---|---|
+| id | bigint (PK, auto increment) | Id Pelanggan |
+| nama | varchar(255) | Nama pelanggan |
+| alamat | text | Alamat pelanggan |
+| no_hp | varchar(20) | Nomor HP |
+| created_at, updated_at | timestamp | Dikelola otomatis oleh Laravel |
+
+### Tabel `staf`
+
+| Kolom | Tipe | Keterangan |
+|---|---|---|
+| id | bigint (PK, auto increment) | Id Staff |
+| nama | varchar(255) | Nama staf |
+| alamat | text | Alamat staf |
+| tanggal_lahir | date | Tanggal lahir |
+| tempat_lahir | varchar(255) | Tempat lahir |
+| no_hp | varchar(20) | Nomor HP |
+| created_at, updated_at | timestamp | Dikelola otomatis oleh Laravel |
+
+### Tabel `obat`
+
+| Kolom | Tipe | Keterangan |
+|---|---|---|
+| id | bigint (PK, auto increment) | Id internal |
+| kode_obat | varchar(255), unik | Kode obat |
+| nama_obat | varchar(255) | Nama obat |
+| stok | integer | Jumlah stok |
+| tanggal_kadaluarsa | date | Tanggal kadaluarsa |
+| created_at, updated_at | timestamp | Dikelola otomatis oleh Laravel |
+
+## Struktur Folder
+
+Bagian yang dikerjakan secara khusus pada proyek ini:
+
+```
+apotek-larvel/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── PelangganController.php   # logika modul pelanggan (web dan API)
+│   │   ├── StafController.php        # logika modul staf (web dan API)
+│   │   └── ObatController.php        # logika modul obat (web dan API)
+│   └── Models/
+│       ├── Pelanggan.php
+│       ├── Staf.php
+│       └── Obat.php
+├── database/
+│   ├── migrations/                   # definisi struktur tabel
+│   └── seeders/                      # data contoh (Pelanggan, Staf, Obat)
+├── postman/                          # koleksi dan environment Postman
+├── resources/views/
+│   ├── layout.blade.php              # kerangka halaman dan navigasi
+│   ├── pelanggan/index.blade.php
+│   ├── staf/index.blade.php
+│   └── obat/index.blade.php
+├── routes/
+│   ├── web.php                       # route antarmuka web
+│   └── api.php                       # route REST API
+├── .env.example                      # contoh konfigurasi lingkungan
+└── README.md
+```
+
+---
+
+## Prasyarat
+
+Pastikan perangkat lunak berikut sudah terpasang sebelum menjalankan aplikasi.
+
+| Perangkat lunak | Versi minimum | Keterangan |
+|---|---|---|
+| PHP | 8.2 | Ekstensi: `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `fileinfo`, `curl` |
+| Composer | 2.x | Pengelola paket PHP |
+| MariaDB atau MySQL | 10.x atau 8.x | Dapat memakai XAMPP atau Laragon |
+| Git | terbaru | Untuk clone repository |
+| Postman | terbaru | Untuk menguji API |
+| Koneksi internet | - | Tampilan memuat Bootstrap dari CDN |
+
+Cek versi dengan perintah berikut:
+
+```bash
+php -v
+composer -V
+git --version
+```
+
+### Menyiapkan lingkungan
+
+**Windows (XAMPP atau Laragon)**
+
+1. Pasang XAMPP atau Laragon, lalu jalankan layanan **Apache** dan **MySQL/MariaDB**.
+2. Pasang Composer dari getcomposer.org dan Git dari git-scm.com.
+3. Pastikan `php` dapat dipanggil dari terminal. Jika belum, tambahkan folder PHP ke variabel lingkungan PATH.
+
+**Arch Linux**
+
+```bash
+sudo pacman -S php composer mariadb git
+sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+sudo systemctl enable --now mariadb
+```
+
+Aktifkan ekstensi PHP yang diperlukan pada `/etc/php/php.ini` dengan menghapus tanda `;` di depan baris berikut:
+
+```ini
+extension=pdo_mysql
+extension=mysqli
+extension=curl
+extension=fileinfo
+```
+
+---
+
+## Instalasi dan Menjalankan Aplikasi
+
+Ikuti langkah berikut secara berurutan. Semua perintah dijalankan di terminal.
+
+### 1. Clone repository
+
+```bash
+git clone https://github.com/yaniss-sudo/apotek-larvel.git
+cd apotek-larvel
+```
+
+### 2. Pasang dependensi
+
+```bash
+composer install
+```
+
+Perintah ini membaca `composer.lock` dan memasang semua paket yang dibutuhkan ke folder `vendor`.
+
+### 3. Salin file konfigurasi
+
+Linux atau macOS:
+
+```bash
+cp .env.example .env
+```
+
+Windows (Command Prompt):
+
+```bash
+copy .env.example .env
+```
+
+### 4. Buat application key
+
+```bash
+php artisan key:generate
+```
+
+### 5. Buat database
+
+Buat database kosong bernama `db_apotek`.
+
+**Melalui phpMyAdmin (XAMPP/Laragon):** buka `http://localhost/phpmyadmin`, pilih *New*, isi nama `db_apotek`, lalu klik *Create*.
+
+**Melalui terminal:**
+
+```bash
+mysql -u root -e "CREATE DATABASE db_apotek;"
+```
+
+Pada Arch Linux, jika memakai pengguna khusus:
+
+```sql
+CREATE DATABASE db_apotek;
+CREATE USER 'apotek'@'localhost' IDENTIFIED BY 'apotek123';
+GRANT ALL PRIVILEGES ON db_apotek.* TO 'apotek'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+### 6. Sesuaikan konfigurasi database
+
+Buka file `.env`, lalu atur bagian database sesuai komputer yang dipakai.
+
+Untuk XAMPP atau Laragon (bawaan):
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=db_apotek
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Untuk Arch Linux dengan pengguna khusus:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=db_apotek
+DB_USERNAME=apotek
+DB_PASSWORD=apotek123
+```
+
+File `.env` bersifat pribadi per komputer dan tidak di-push ke GitHub.
+
+### 7. Jalankan migrasi dan seeder
+
+```bash
+php artisan migrate --seed
+```
+
+Perintah ini membuat seluruh tabel sekaligus mengisinya dengan data contoh. Untuk membuat tabel saja tanpa data contoh, gunakan `php artisan migrate`.
+
+### 8. Jalankan server
+
+```bash
+php artisan serve
+```
+
+Buka `http://127.0.0.1:8000` di browser. Biarkan terminal tetap terbuka selama aplikasi dipakai. Tekan `Ctrl + C` untuk menghentikan server.
+
+Jika port 8000 sudah dipakai, gunakan port lain:
+
+```bash
+php artisan serve --port=8080
+```
+
+### Ringkasan perintah
+
+```bash
+git clone https://github.com/yaniss-sudo/apotek-larvel.git
+cd apotek-larvel
+composer install
+cp .env.example .env          # Windows: copy .env.example .env
+php artisan key:generate
+# buat database db_apotek, lalu sesuaikan .env
+php artisan migrate --seed
+php artisan serve
+```
+
+---
+
+## Penggunaan Aplikasi Web
+
+| Halaman | Alamat | Fungsi |
+|---|---|---|
+| Pelanggan | `/pelanggan` | Menambah, melihat, dan menghapus data pelanggan |
+| Staf Apotek | `/staf` | Menambah, melihat, dan menghapus data staf |
+| Daftar Obat | `/obat` | Menambah, melihat, dan menghapus data obat |
+
+**Menambah data:** isi formulir pada bagian atas halaman, lalu klik **Simpan**. Data baru langsung muncul pada tabel di bawah formulir. Jika ada isian yang salah, pesan kesalahan ditampilkan di bagian atas halaman.
+
+**Menghapus data:** klik tombol **Hapus** pada baris yang diinginkan, lalu konfirmasi pada kotak dialog.
+
+**Penanda kadaluarsa:** pada halaman Daftar Obat, baris obat yang tanggal kadaluarsanya sudah terlewat ditampilkan dengan latar merah.
+
+---
+
+## Dokumentasi API dan Pengujian Postman
+
+### Informasi umum
+
+- Base URL: `http://127.0.0.1:8000/api`
+- Format data: JSON
+- Pastikan server berjalan (`php artisan serve`) sebelum menguji.
+
+### Daftar endpoint
+
+Berlaku untuk tiga sumber daya: `pelanggan`, `staf`, dan `obat`.
+
+| Operasi | Method | Endpoint | Keterangan |
+|---|---|---|---|
+| Lihat semua data | GET | `/api/{sumber}` | Mengembalikan seluruh data |
+| Lihat satu data | GET | `/api/{sumber}/{id}` | Mengembalikan data berdasarkan id |
+| Tambah data | POST | `/api/{sumber}` | Mengembalikan data baru, status 201 |
+| Ubah data | PUT | `/api/{sumber}/{id}` | Mengembalikan data yang diperbarui |
+| Hapus data | DELETE | `/api/{sumber}/{id}` | Mengembalikan pesan konfirmasi |
+
+### Contoh isi Body (raw, JSON)
+
+**POST `/api/pelanggan`**
+
+```json
+{
+  "nama": "Budi Santoso",
+  "alamat": "Jl. Merdeka No. 1, Medan",
+  "no_hp": "081234567890"
+}
+```
+
+**POST `/api/staf`**
+
+```json
+{
+  "nama": "Dewi Lestari",
+  "alamat": "Jl. Pemuda No. 12, Medan",
+  "tanggal_lahir": "1999-03-14",
+  "tempat_lahir": "Medan",
+  "no_hp": "082111222333"
+}
+```
+
+**POST `/api/obat`**
+
+```json
+{
+  "kode_obat": "OBT010",
+  "nama_obat": "Paracetamol 500 mg",
+  "stok": 100,
+  "tanggal_kadaluarsa": "2027-12-31"
+}
+```
+
+### Aturan validasi
+
+| Sumber | Field | Aturan |
+|---|---|---|
+| pelanggan | nama | wajib, teks, maksimal 255 karakter |
+| pelanggan | alamat | wajib, teks |
+| pelanggan | no_hp | wajib, teks, maksimal 20 karakter |
+| staf | nama, tempat_lahir | wajib, teks, maksimal 255 karakter |
+| staf | alamat | wajib, teks |
+| staf | tanggal_lahir | wajib, format tanggal (YYYY-MM-DD) |
+| staf | no_hp | wajib, teks, maksimal 20 karakter |
+| obat | kode_obat | wajib, teks, maksimal 50 karakter, unik |
+| obat | nama_obat | wajib, teks, maksimal 255 karakter |
+| obat | stok | wajib, bilangan bulat, minimal 0 |
+| obat | tanggal_kadaluarsa | wajib, format tanggal (YYYY-MM-DD) |
+
+Jika validasi gagal, API mengembalikan status **422** beserta rincian kesalahan dalam format JSON.
+
+### Menggunakan koleksi Postman
+
+Folder `postman` berisi koleksi dan environment yang siap diimpor.
+
+1. Buka Postman, klik **Import**.
+2. Pilih file koleksi (`*.postman_collection.json`) dan file environment (`*.postman_environment.json`) dari folder `postman`.
+3. Pada pojok kanan atas Postman, pilih environment **Apotek Local**.
+4. Pastikan variabel `base_url` bernilai `http://127.0.0.1:8000/api`. Ubah port jika server dijalankan di port lain.
+5. Jalankan `php artisan serve`, lalu kirim request dari koleksi.
+
+Urutan pengujian yang disarankan: POST (tambah) lalu GET (lihat) lalu PUT (ubah) lalu DELETE (hapus), dan bandingkan hasilnya dengan tampilan di halaman web.
+
+### Pengujian cepat melalui terminal
+
+```bash
+curl http://127.0.0.1:8000/api/obat
+curl -X POST http://127.0.0.1:8000/api/pelanggan \
+  -H "Content-Type: application/json" \
+  -d '{"nama":"Budi","alamat":"Medan","no_hp":"0812345"}'
+```
+
+---
+
+## Seeder (Data Contoh)
+
+Seeder mengisi database dengan data awal agar halaman tidak kosong saat didemonstrasikan.
+
+| Seeder | Isi |
+|---|---|
+| PelangganSeeder | 3 data pelanggan |
+| StafSeeder | 2 data staf |
+| ObatSeeder | 4 data obat (satu di antaranya sengaja sudah kadaluarsa untuk memperlihatkan penanda merah) |
+
+Perintah yang berkaitan:
+
+```bash
+php artisan db:seed                  # mengisi data contoh (aman dijalankan berulang)
+php artisan migrate:fresh --seed     # menghapus semua tabel, membuat ulang, lalu mengisi data
+```
+
+Seeder memakai `updateOrCreate`, sehingga menjalankannya berulang kali tidak menghasilkan data ganda.
+
+---
+
+## Panduan Mengisi Identitas Anggota
+
+> Bagian ini hanya untuk anggota kelompok. Hapus seluruh bagian ini setelah keempat anggota selesai mengisi.
+
+Setiap anggota cukup mengisi **satu baris** pada tabel [Anggota Kelompok](#anggota-kelompok) di bagian atas file ini, dengan nama lengkap dan NIM. Nomor kelompok diisi satu kali oleh anggota mana pun.
+
+Agar tidak terjadi bentrok saat push, setiap anggota hanya boleh mengubah **barisnya sendiri**:
+
+| Anggota | Baris yang diisi |
+|---|---|
+| Anggota 1 | Baris nomor 1 |
+| Anggota 2 | Baris nomor 2 |
+| Anggota 3 | Baris nomor 3 |
+| Anggota 4 | Baris nomor 4 |
+
+### Langkah untuk setiap anggota
+
+1. Pastikan sudah menjadi kolaborator repository (pemilik repository mengundang melalui menu **Settings > Collaborators** di GitHub, lalu undangan diterima melalui email).
+2. Clone repository (lewati jika sudah pernah):
+
+   ```bash
+   git clone https://github.com/yaniss-sudo/apotek-larvel.git
+   cd apotek-larvel
+   ```
+
+3. Ambil perubahan terbaru sebelum mengedit:
+
+   ```bash
+   git pull
+   ```
+
+4. Buka `README.md`, isi baris milik sendiri pada tabel Anggota Kelompok, lalu simpan. Jangan mengubah bagian lain.
+5. Kirim perubahan ke GitHub:
+
+   ```bash
+   git add README.md
+   git commit -m "Tambah identitas anggota: NAMA_KAMU"
+   git pull --rebase
+   git push
+   ```
+
+   Perintah `git pull --rebase` sebelum `git push` mengambil perubahan anggota lain yang masuk lebih dulu, sehingga push tidak ditolak.
+
+### Jika terjadi konflik
+
+Konflik terjadi bila dua orang mengubah baris yang sama. Git akan menandai file dengan:
+
+```
+<<<<<<< HEAD
+... isi dari versi lain ...
+=======
+... isi dari versimu ...
+>>>>>>> pesan-commit
+```
+
+Buka `README.md`, hapus baris penanda (`<<<<<<<`, `=======`, `>>>>>>>`), pertahankan **semua** baris anggota yang benar, lalu jalankan:
+
+```bash
+git add README.md
+git rebase --continue
+git push
+```
+
+### Konfigurasi identitas Git (sekali saja)
+
+Jika belum pernah mengatur Git di komputer:
+
+```bash
+git config --global user.name "Nama Kamu"
+git config --global user.email "email-github-kamu@contoh.com"
+```
+
+Jika diminta kata sandi saat push, gunakan **Personal Access Token** GitHub sebagai pengganti kata sandi, atau login melalui GitHub CLI (`gh auth login`).
+
+---
+
+## Pemecahan Masalah
+
+| Masalah | Penyebab | Solusi |
+|---|---|---|
+| `composer install` gagal karena versi PHP | PHP di bawah 8.2 | Perbarui PHP ke 8.2 atau lebih baru |
+| `could not find driver` | Ekstensi `pdo_mysql` belum aktif | Aktifkan `extension=pdo_mysql` pada `php.ini`, lalu jalankan ulang |
+| `Access denied for user` | Username atau password di `.env` salah | Samakan `DB_USERNAME` dan `DB_PASSWORD` dengan pengaturan database di komputer |
+| `Unknown database 'db_apotek'` | Database belum dibuat | Buat database `db_apotek` terlebih dahulu |
+| `No application encryption key has been specified` | Belum menjalankan `key:generate` | Jalankan `php artisan key:generate` |
+| `Table ... doesn't exist` | Migrasi belum dijalankan | Jalankan `php artisan migrate --seed` |
+| `Class ... not found` setelah `git pull` | Dependensi berubah | Jalankan `composer install` |
+| Port 8000 sudah dipakai | Ada aplikasi lain di port tersebut | Gunakan `php artisan serve --port=8080` |
+| Perubahan tampilan tidak muncul | Cache view | Jalankan `php artisan view:clear` |
+| Tampilan tanpa gaya (polos) | Tidak ada internet, Bootstrap CDN gagal dimuat | Hubungkan ke internet |
+| Postman menampilkan halaman HTML, bukan JSON | Alamat tidak diawali `/api` | Gunakan base URL `http://127.0.0.1:8000/api` |
+
+Untuk mengulang dari awal dengan database bersih:
+
+```bash
+php artisan migrate:fresh --seed
+php artisan optimize:clear
+```
+
+---
+
+## Catatan
+
+- File `.env` dan folder `vendor` tidak disertakan di repository. Keduanya dibuat ulang melalui langkah instalasi di atas.
+- Pastikan `composer.json` dan `composer.lock` ikut di-commit, karena keduanya menjaga agar versi paket sama di semua komputer.
+- Sebelum presentasi, uji alur instalasi dari awal (`git clone` sampai `php artisan serve`) pada komputer yang akan dipakai.
