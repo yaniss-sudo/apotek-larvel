@@ -466,7 +466,7 @@ Seeder memakai `updateOrCreate`, sehingga menjalankannya berulang kali tidak men
 
 ## Panduan Mengisi Identitas Anggota
 
-> Bagian ini hanya untuk anggota kelompok. Hapus seluruh bagian ini setelah keempat anggota selesai mengisi.
+> Bagian ini kalau semua udah selesai isi.
 
 Setiap anggota cukup mengisi **satu baris** pada tabel [Anggota Kelompok](#anggota-kelompok) di bagian atas file ini, dengan nama lengkap dan NIM. Nomor kelompok diisi satu kali oleh anggota mana pun.
 
@@ -481,8 +481,8 @@ Agar tidak terjadi bentrok saat push, setiap anggota hanya boleh mengubah **bari
 
 ### Langkah untuk setiap anggota
 
-1. Pastikan sudah menjadi kolaborator repository (pemilik repository mengundang melalui menu **Settings > Collaborators** di GitHub, lalu undangan diterima melalui email).
-2. Clone repository (lewati jika sudah pernah):
+1. Pastikan sudah menjadi kolaborator repository.
+2. Clone repository :
 
    ```bash
    git clone https://github.com/yaniss-sudo/apotek-larvel.git
@@ -495,21 +495,21 @@ Agar tidak terjadi bentrok saat push, setiap anggota hanya boleh mengubah **bari
    git pull
    ```
 
-4. Buka `README.md`, isi baris milik sendiri pada tabel Anggota Kelompok, lalu simpan. Jangan mengubah bagian lain.
+4. Buka `README.md`, isi nama dan nim masing masing pada tabel Anggota Kelompok, lalu simpan. Jangan ubah bagian lain, capek commit mulu gua jir.
 5. Kirim perubahan ke GitHub:
 
    ```bash
    git add README.md
-   git commit -m "Tambah identitas anggota: NAMA_KAMU"
+   git commit -m "Tambah identitas anggota: nama kalian"
    git pull --rebase
    git push
    ```
 
-   Perintah `git pull --rebase` sebelum `git push` mengambil perubahan anggota lain yang masuk lebih dulu, sehingga push tidak ditolak.
+   Perintah `git pull --rebase` dulu sebelum `git push` mengambil perubahan lain yang lebih dulu, sehingga push nggak tidak ditolak.
 
 ### Jika terjadi konflik
 
-Konflik terjadi bila dua orang mengubah baris yang sama. Git akan menandai file dengan:
+Konflik atau error biasanya kalau dua orang mengubah baris yang sama. Git menandai file dengan:
 
 ```
 <<<<<<< HEAD
@@ -529,14 +529,14 @@ git push
 
 ### Konfigurasi identitas Git (sekali saja)
 
-Jika belum pernah mengatur Git di komputer:
+Jika belom pernah mengatur Git di (tapi keknya pernah dah):
 
 ```bash
-git config --global user.name "Nama Kamu"
-git config --global user.email "email-github-kamu@contoh.com"
+git config --global user.name "Nama kalian"
+git config --global user.email "xxxxxx@gmail.com(alah pokoknya email github kalian)"
 ```
 
-Jika diminta kata sandi saat push, gunakan **Personal Access Token** GitHub sebagai pengganti kata sandi, atau login melalui GitHub CLI (`gh auth login`).
+kalau diminta kata sandi saat push, pakek **Personal Access Token** GitHub sebagai pengganti kata sandi, atau login melalui GitHub CLI (`gh auth login`).
 
 ---
 
@@ -569,4 +569,3 @@ php artisan optimize:clear
 
 - File `.env` dan folder `vendor` tidak disertakan di repository. Keduanya dibuat ulang melalui langkah instalasi di atas.
 - Pastikan `composer.json` dan `composer.lock` ikut di-commit, karena keduanya menjaga agar versi paket sama di semua komputer.
-- Sebelum presentasi, uji alur instalasi dari awal (`git clone` sampai `php artisan serve`) pada komputer yang akan dipakai.
