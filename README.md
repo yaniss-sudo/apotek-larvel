@@ -14,14 +14,14 @@ Proyek ini disusun untuk memenuhi Tugas Kelompok mata kuliah Sistem Terintegrasi
 | Kelas | TRKJ 2C |
 | Dosen Pengampu | Hari Toha Hidayat |
 | Tahun | 2026 |
-| Kelompok | KELOMPOK X |
+| Kelompok | KELOMPOK 5 |
 
 ## Anggota Kelompok
 
 | No | Nama Lengkap | NIM |
 |---|---|---|
-| 1 | [ISI NAMA ANGGOTA 1] |
-| 2 | Yanissullah |
+| 1 | Yanissullah |
+| 2 | Hidayatus Salikin | 2025903430089 |
 | 3 | [ISI NAMA ANGGOTA 3] |
 | 4 | [ISI NAMA ANGGOTA 4] | 
 
