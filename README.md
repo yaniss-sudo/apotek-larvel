@@ -20,10 +20,10 @@ Proyek ini disusun untuk memenuhi Tugas Kelompok mata kuliah Sistem Terintegrasi
 
 | No | Nama Lengkap | NIM |
 |---|---|---|
-| 1 | [ISI NAMA ANGGOTA 1] | [ISI NIM] |
-| 2 | Yanissullah | 2025903430080 |
-| 3 | [ISI NAMA ANGGOTA 3] | [ISI NIM] |
-| 4 | [ISI NAMA ANGGOTA 4] | [ISI NIM] |
+| 1 | [ISI NAMA ANGGOTA 1] |
+| 2 | Yanissullah |
+| 3 | [ISI NAMA ANGGOTA 3] |
+| 4 | [ISI NAMA ANGGOTA 4] | 
 
 ---
 
@@ -39,8 +39,7 @@ Proyek ini disusun untuk memenuhi Tugas Kelompok mata kuliah Sistem Terintegrasi
 8. [Penggunaan Aplikasi Web](#penggunaan-aplikasi-web)
 9. [Dokumentasi API dan Pengujian Postman](#dokumentasi-api-dan-pengujian-postman)
 10. [Seeder (Data Contoh)](#seeder-data-contoh)
-11. [Panduan Mengisi Identitas Anggota](#panduan-mengisi-identitas-anggota)
-12. [Pemecahan Masalah](#pemecahan-masalah)
+11. [Pemecahan Masalah](#pemecahan-masalah)
 
 ---
 
@@ -461,84 +460,6 @@ php artisan migrate:fresh --seed     # menghapus semua tabel, membuat ulang, lal
 ```
 
 Seeder memakai `updateOrCreate`, sehingga menjalankannya berulang kali tidak menghasilkan data ganda.
-
----
-
-## Panduan Mengisi Identitas Anggota
-
-> Bagian ini kalau semua udah selesai isi.
-
-Setiap anggota cukup mengisi **satu baris** pada tabel [Anggota Kelompok](#anggota-kelompok) di bagian atas file ini, dengan nama lengkap dan NIM. Nomor kelompok diisi satu kali oleh anggota mana pun.
-
-Agar tidak terjadi bentrok saat push, setiap anggota hanya boleh mengubah **barisnya sendiri**:
-
-| Anggota | Baris yang diisi |
-|---|---|
-| Anggota 1 | Baris nomor 1 |
-| Anggota 2 | Baris nomor 2 |
-| Anggota 3 | Baris nomor 3 |
-| Anggota 4 | Baris nomor 4 |
-
-### Langkah untuk setiap anggota
-
-1. Pastikan sudah menjadi kolaborator repository.
-2. Clone repository :
-
-   ```bash
-   git clone https://github.com/yaniss-sudo/apotek-larvel.git
-   cd apotek-larvel
-   ```
-
-3. Ambil perubahan terbaru sebelum mengedit:
-
-   ```bash
-   git pull
-   ```
-
-4. Buka `README.md`, isi nama dan nim masing masing pada tabel Anggota Kelompok, lalu simpan. Jangan ubah bagian lain, capek commit mulu gua jir.
-5. Kirim perubahan ke GitHub:
-
-   ```bash
-   git add README.md
-   git commit -m "Tambah identitas anggota: nama kalian"
-   git pull --rebase
-   git push
-   ```
-
-   Perintah `git pull --rebase` dulu sebelum `git push` mengambil perubahan lain yang lebih dulu, sehingga push nggak tidak ditolak.
-
-### Jika terjadi konflik
-
-Konflik atau error biasanya kalau dua orang mengubah baris yang sama. Git menandai file dengan:
-
-```
-<<<<<<< HEAD
-... isi dari versi lain ...
-=======
-... isi dari versimu ...
->>>>>>> pesan-commit
-```
-
-Buka `README.md`, hapus baris penanda (`<<<<<<<`, `=======`, `>>>>>>>`), pertahankan **semua** baris anggota yang benar, lalu jalankan:
-
-```bash
-git add README.md
-git rebase --continue
-git push
-```
-
-### Konfigurasi identitas Git (sekali saja)
-
-Jika belom pernah mengatur Git di (tapi keknya pernah dah):
-
-```bash
-git config --global user.name "Nama kalian"
-git config --global user.email "xxxxxx@gmail.com(alah pokoknya email github kalian)"
-```
-
-kalau diminta kata sandi saat push, pakek **Personal Access Token** GitHub sebagai pengganti kata sandi, atau login melalui GitHub CLI (`gh auth login`).
-
----
 
 ## Pemecahan Masalah
 
