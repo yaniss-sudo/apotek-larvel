@@ -17,7 +17,7 @@
       font-size: 7rem;
       font-weight: 700;
       line-height: 1;
-      color: #198754;
+      color: #0e7c49;
     }
   </style>
 </head>
@@ -29,7 +29,7 @@
       Alamat yang kamu buka tidak tersedia atau sudah dipindahkan.<br>
       Periksa kembali alamatnya, atau kembali ke halaman utama.
     </p>
-    <a href="{{ url('/') }}" class="btn btn-success">Ke Beranda</a>
+    <a href="{{ url('/') }}" class="btn btn-success" style="background:#0e7c49;border-color:#0e7c49">Ke Beranda</a>
     <a href="javascript:history.back()" class="btn btn-outline-secondary">Kembali</a>
     <div class="mt-4 small text-muted">Aplikasi Apotek</div>
   </div>

@@ -1,74 +1,207 @@
 @extends('layout')
+@section('title', 'Staf Apotek')
 @section('content')
-<div class="card">
-  <div class="card-header">
-    <span class="badge bg-success">Staf</span> Data Staf Apotek
+@php
+  $editId = old('_edit_id');
+  $addErr = old('_add');
+  $o = fn($key) => $addErr ? old($key) : null;
+  $tgl = fn($t) => $t ? \Carbon\Carbon::parse($t)->format('d M Y') : '-';
+@endphp
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Staf Apotek</h1>
+    <p class="page-sub">Kelola data staf yang bekerja di apotek.</p>
   </div>
-  <div class="card-body">
-    <form method="POST" action="{{ route('staf.store') }}" class="row g-3 mb-4 align-items-end">
-      @csrf
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label d-block mb-1">Nama</label>
-        <input name="nama" class="form-control" placeholder="Nama" value="{{ old('nama') }}" required>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <label class="form-label d-block mb-1">Alamat</label>
-        <textarea name="alamat" class="form-control" placeholder="Alamat" rows="2" required>{{ old('alamat') }}</textarea>
-      </div>
-      <div class="col-md-2 col-sm-6">
-        <label class="form-label d-block mb-1">Tanggal Lahir</label>
-        <input type="date" name="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir') }}" required>
-      </div>
-      <div class="col-md-2 col-sm-6">
-        <label class="form-label d-block mb-1">Tempat Lahir</label>
-        <input name="tempat_lahir" class="form-control" placeholder="Tempat Lahir" value="{{ old('tempat_lahir') }}" required>
-      </div>
-      <div class="col-md-1 col-sm-6">
-        <label class="form-label d-block mb-1">No HP</label>
-        <input name="no_hp" class="form-control" placeholder="No HP" value="{{ old('no_hp') }}" required>
-      </div>
-      <div class="col-12">
-        <button class="btn btn-primary">Simpan</button>
-      </div>
-    </form>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambah-staf">
+    <i class="bi bi-plus-lg me-1"></i> Tambah Staf
+  </button>
+</div>
 
-    <div class="table-responsive">
-      <table class="table table-hover align-middle">
-        <thead>
-          <tr>
-            <th>Id Staff</th>
-            <th>Nama</th>
-            <th>Alamat</th>
-            <th>Tanggal Lahir</th>
-            <th>Tempat Lahir</th>
-            <th>No HP</th>
-            <th class="text-end" style="width: 12%">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-        @foreach($data as $d)
-          <tr>
-            <td>{{ $d->id }}</td>
-            <td>{{ $d->nama }}</td>
-            <td>{{ $d->alamat }}</td>
-            <td>{{ $d->tanggal_lahir }}</td>
-            <td>{{ $d->tempat_lahir }}</td>
-            <td>{{ $d->no_hp }}</td>
-            <td class="text-end">
-              <form method="POST" action="{{ route('staf.destroy', $d->id) }}" onsubmit="return confirm('Yakin ingin menghapus staf ini?')" class="d-inline">
-                @csrf @method('DELETE')
-                <button class="btn btn-sm btn-danger">Hapus</button>
-              </form>
-            </td>
-          </tr>
-        @endforeach
-        </tbody>
-      </table>
+<div class="card table-card">
+  <div class="card-toolbar">
+    <div class="search">
+      <i class="bi bi-search"></i>
+      <input type="search" class="form-control" placeholder="Cari nama, no HP, alamat..."
+             data-filter="#tabel-staf" data-count="#hitung-staf" data-unit="staf">
     </div>
-
-    @if(!$data->count())
-      <div class="empty-state">Belum ada data staf apotek.</div>
-    @endif
+    <span class="count" id="hitung-staf">{{ $data->count() }} staf</span>
+  </div>
+  <div class="table-scroll">
+    <table class="table table-hover align-middle" id="tabel-staf">
+      <thead>
+        <tr>
+          <th>Staf</th>
+          <th class="d-none d-md-table-cell">No HP</th>
+          <th class="d-none d-md-table-cell">Alamat</th>
+          <th class="d-none d-lg-table-cell">Tempat, Tgl. Lahir</th>
+          <th class="d-none d-xxl-table-cell">Bio</th>
+          <th class="text-end col-aksi">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+      @forelse($data as $d)
+        <tr data-row>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <x-avatar :nama="$d->nama" :foto="$d->foto" />
+              <div>
+                <div class="fw-semibold">{{ $d->nama }}</div>
+                <div class="cell-sub">ID #{{ $d->id }}<span class="d-md-none"> · {{ $d->no_hp }}</span></div>
+              </div>
+            </div>
+          </td>
+          <td class="d-none d-md-table-cell">{{ $d->no_hp }}</td>
+          <td class="d-none d-md-table-cell"><div class="truncate" title="{{ $d->alamat }}">{{ $d->alamat }}</div></td>
+          <td class="d-none d-lg-table-cell">{{ $d->tempat_lahir }}<div class="cell-sub">{{ $tgl($d->tanggal_lahir) }}</div></td>
+          <td class="d-none d-xxl-table-cell"><div class="truncate" title="{{ $d->bio }}">{{ $d->bio ?: '-' }}</div></td>
+          <td class="text-end col-aksi">
+            <div class="d-flex justify-content-end gap-1">
+              <button type="button" class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#edit-staf-{{ $d->id }}" title="Ubah">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <form method="POST" action="{{ route('staf.destroy', $d->id) }}" onsubmit="return confirm('Yakin ingin menghapus staf ini?')">
+                @csrf @method('DELETE')
+                <button class="btn btn-icon danger" title="Hapus"><i class="bi bi-trash"></i></button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      @empty
+        <tr><td colspan="6" class="empty-state"><i class="bi bi-person-x"></i>Belum ada data staf apotek.</td></tr>
+      @endforelse
+        <tr class="no-result" hidden><td colspan="6" class="empty-state"><i class="bi bi-search"></i>Tidak ada hasil yang cocok.</td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
+
+{{-- Modal tambah --}}
+<div class="modal fade" id="tambah-staf" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <form method="POST" action="{{ route('staf.store') }}" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="_add" value="1">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Staf</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label">Nama</label>
+              <input name="nama" class="form-control" placeholder="Nama lengkap" value="{{ $o('nama') }}" required>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">No HP</label>
+              <input name="no_hp" class="form-control" placeholder="08xxxxxxxxxx" value="{{ $o('no_hp') }}" required>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Tempat Lahir</label>
+              <input name="tempat_lahir" class="form-control" placeholder="Kota" value="{{ $o('tempat_lahir') }}" required>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Tanggal Lahir</label>
+              <input type="date" name="tanggal_lahir" class="form-control" value="{{ $o('tanggal_lahir') }}" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Alamat</label>
+              <textarea name="alamat" class="form-control" rows="2" placeholder="Alamat lengkap" required>{{ $o('alamat') }}</textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Bio <span class="text-muted fw-normal">(opsional)</span></label>
+              <textarea name="bio" class="form-control" rows="2" placeholder="Bio singkat...">{{ $o('bio') }}</textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Foto Profil <span class="text-muted fw-normal">(opsional)</span></label>
+              <input type="file" name="foto" class="form-control" accept="image/*">
+              <div class="form-text">Maks 2MB (JPG/PNG/WebP)</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{{-- Modal ubah --}}
+@foreach($data as $d)
+@php $isEdit = (string) $editId === (string) $d->id; $v = fn($k, $default) => $isEdit ? old($k, $default) : $default; @endphp
+<div class="modal fade" id="edit-staf-{{ $d->id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <form method="POST" action="{{ route('staf.update', $d->id) }}" enctype="multipart/form-data">
+        @csrf @method('PUT')
+        <input type="hidden" name="_edit_id" value="{{ $d->id }}">
+        <div class="modal-header">
+          <h5 class="modal-title">Ubah Data Staf</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-12 d-flex align-items-center gap-3">
+              <x-avatar :nama="$d->nama" :foto="$d->foto" :large="true" />
+              <div class="flex-grow-1">
+                <label class="form-label">Foto</label>
+                <input type="file" name="foto" class="form-control" accept="image/*">
+                <div class="form-text">Kosongkan jika tidak ingin mengubah.</div>
+              </div>
+              @if($d->foto)
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="hapus_foto" id="hapus_foto_staf_{{ $d->id }}">
+                <label class="form-check-label small" for="hapus_foto_staf_{{ $d->id }}">Hapus foto</label>
+              </div>
+              @endif
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Nama</label>
+              <input name="nama" class="form-control" value="{{ $v('nama', $d->nama) }}" required>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">No HP</label>
+              <input name="no_hp" class="form-control" value="{{ $v('no_hp', $d->no_hp) }}" required>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Tempat Lahir</label>
+              <input name="tempat_lahir" class="form-control" value="{{ $v('tempat_lahir', $d->tempat_lahir) }}" required>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Tanggal Lahir</label>
+              <input type="date" name="tanggal_lahir" class="form-control" value="{{ $v('tanggal_lahir', $d->tanggal_lahir ? \Carbon\Carbon::parse($d->tanggal_lahir)->format('Y-m-d') : '') }}" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Alamat</label>
+              <textarea name="alamat" class="form-control" rows="2" required>{{ $v('alamat', $d->alamat) }}</textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Bio</label>
+              <textarea name="bio" class="form-control" rows="2">{{ $v('bio', $d->bio) }}</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endforeach
 @endsection
+
+@push('scripts')
+@if($errors->any() && ($editId || $addErr))
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var el = document.getElementById('{{ $editId ? 'edit-staf-'.(int) $editId : 'tambah-staf' }}');
+    if (el) new bootstrap.Modal(el).show();
+  });
+</script>
+@endif
+@endpush
