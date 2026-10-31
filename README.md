@@ -20,7 +20,7 @@ Proyek ini disusun untuk memenuhi Tugas Kelompok mata kuliah Sistem Terintegrasi
 
 | No | Nama Lengkap | NIM |
 |---|---|---|
-| 1 | Yanissullah |
+| 1 | Yanissullah | 2025903430080
 | 2 | Hidayatus Salikin | 2025903430089 |
 | 3 | [ISI NAMA ANGGOTA 3] |
 | 4 | [ISI NAMA ANGGOTA 4] | 
