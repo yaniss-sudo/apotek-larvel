@@ -20,10 +20,10 @@ Proyek ini disusun untuk memenuhi Tugas Kelompok mata kuliah Sistem Terintegrasi
 
 | No | Nama Lengkap | NIM |
 |---|---|---|
-| 1 | Yanissullah | 2025903430080
+| 1 | Yanissullah | 2025903430080 |
 | 2 | Hidayatus Salikin | 2025903430089 |
 | 3 | Nadiatul Hikmah | 2025903430047 |
-| 4 |  Shaina Aulia Putri | 2025903430096 | 
+| 4 | Shaina Aulia Putri | 2025903430096 | 
 
 ---
 
@@ -55,21 +55,24 @@ Kedua cara tersebut memakai controller, model, dan database yang sama, sehingga 
 ## Fitur
 
 **Modul Pelanggan**
-- Menyimpan data pelanggan (nama, alamat, nomor HP).
+- Menyimpan data pelanggan (nama, alamat, nomor HP, foto profil, dan bio).
+- Upload dan hapus foto profil pelanggan.
 - Menampilkan dan menghapus data pelanggan.
 
 **Modul Staf Apotek**
-- Menyimpan data staf (nama, alamat, tanggal lahir, tempat lahir, nomor HP).
+- Menyimpan data staf (nama, alamat, tanggal lahir, tempat lahir, nomor HP, foto profil, dan bio).
+- Upload dan hapus foto profil staf.
 - Menampilkan dan menghapus data staf.
 
 **Modul Daftar Obat**
 - Menyimpan data obat (kode obat, nama obat, stok, tanggal kadaluarsa).
 - Kode obat bersifat unik, sehingga tidak ada kode yang ganda.
-- Obat yang sudah melewati tanggal kadaluarsa otomatis ditandai dengan warna merah pada tabel.
+- Obat yang sudah melewati tanggal kadaluarsa otomatis ditandai dengan badge "Kadaluarsa" pada tabel.
 
 **Umum**
 - Validasi input pada sisi server, dengan pesan kesalahan yang ditampilkan di web dan dikirim sebagai JSON pada API.
 - API lengkap dengan operasi CRUD (Create, Read, Update, Delete) untuk ketiga modul.
+- Antarmuka web: Pelanggan dan Staf memiliki fitur update; Obat hanya tersedia tambah dan hapus (tidak ada edit melalui web).
 - Seeder untuk mengisi data contoh secara otomatis.
 - Koleksi Postman siap pakai pada folder `postman`.
 
@@ -99,18 +102,22 @@ Nama database: `db_apotek`
 | nama | varchar(255) | Nama pelanggan |
 | alamat | text | Alamat pelanggan |
 | no_hp | varchar(20) | Nomor HP |
+| foto | varchar(255), nullable | Path foto profil pelanggan |
+| bio | text, nullable | Bio pelanggan |
 | created_at, updated_at | timestamp | Dikelola otomatis oleh Laravel |
 
 ### Tabel `staf`
 
 | Kolom | Tipe | Keterangan |
 |---|---|---|
-| id | bigint (PK, auto increment) | Id Staff |
+| id | bigint (PK, auto increment) | Id Staf |
 | nama | varchar(255) | Nama staf |
 | alamat | text | Alamat staf |
 | tanggal_lahir | date | Tanggal lahir |
 | tempat_lahir | varchar(255) | Tempat lahir |
 | no_hp | varchar(20) | Nomor HP |
+| foto | varchar(255), nullable | Path foto profil staf |
+| bio | text, nullable | Bio staf |
 | created_at, updated_at | timestamp | Dikelola otomatis oleh Laravel |
 
 ### Tabel `obat`
@@ -132,6 +139,7 @@ Bagian yang dikerjakan secara khusus pada proyek ini:
 apotek-larvel/
 ├── app/
 │   ├── Http/Controllers/
+│   │   ├── Controller.php            # Controller dasar
 │   │   ├── PelangganController.php   # logika modul pelanggan (web dan API)
 │   │   ├── StafController.php        # logika modul staf (web dan API)
 │   │   └── ObatController.php        # logika modul obat (web dan API)
@@ -139,19 +147,43 @@ apotek-larvel/
 │       ├── Pelanggan.php
 │       ├── Staf.php
 │       └── Obat.php
+├── bootstrap/                        # bootstrapping aplikasi (cache layanan, provider)
+├── config/                           # konfigurasi Laravel (database, cache, queue, dll.)
 ├── database/
+│   ├── factories/                    # model factories (contoh: UserFactory)
 │   ├── migrations/                   # definisi struktur tabel
 │   └── seeders/                      # data contoh (Pelanggan, Staf, Obat)
-├── postman/                          # koleksi dan environment Postman
-├── resources/views/
-│   ├── layout.blade.php              # kerangka halaman dan navigasi
-│   ├── pelanggan/index.blade.php
-│   ├── staf/index.blade.php
-│   └── obat/index.blade.php
+├── postman/                          # koleksi Postman (apotek.postman_collection.json)
+├── public/                           # file publik (index.php, css, favicon, dll.)
+├── resources/
+│   ├── css/
+│   │   └── app.css
+│   ├── js/
+│   │   ├── app.js
+│   │   └── bootstrap.js
+│   └── views/
+│       ├── components/
+│       │   └── avatar.blade.php
+│       ├── errors/
+│       │   └── 404.blade.php
+│       ├── layout.blade.php          # kerangka halaman dan navigasi
+│       ├── pelanggan/index.blade.php
+│       ├── staf/index.blade.php
+│       ├── obat/index.blade.php
+│       └── welcome.blade.php
 ├── routes/
 │   ├── web.php                       # route antarmuka web
 │   └── api.php                       # route REST API
+├── storage/                          # penyimpanan aplikasi (log, framework, app)
+├── tests/                            # tes otomatis
+├── artisan
+├── composer.json
+├── composer.lock
+├── package.json
+├── vite.config.js
+├── phpunit.xml
 ├── .env.example                      # contoh konfigurasi lingkungan
+├── .gitignore
 └── README.md
 ```
 
@@ -334,15 +366,19 @@ php artisan serve
 
 | Halaman | Alamat | Fungsi |
 |---|---|---|
-| Pelanggan | `/pelanggan` | Menambah, melihat, dan menghapus data pelanggan |
-| Staf Apotek | `/staf` | Menambah, melihat, dan menghapus data staf |
+| Pelanggan | `/pelanggan` | Menambah, melihat, mengubah, dan menghapus data pelanggan (termasuk foto profil dan bio) |
+| Staf Apotek | `/staf` | Menambah, melihat, mengubah, dan menghapus data staf (termasuk foto profil dan bio) |
 | Daftar Obat | `/obat` | Menambah, melihat, dan menghapus data obat |
 
 **Menambah data:** isi formulir pada bagian atas halaman, lalu klik **Simpan**. Data baru langsung muncul pada tabel di bawah formulir. Jika ada isian yang salah, pesan kesalahan ditampilkan di bagian atas halaman.
 
+**Mengubah data:** klik tombol **Ubah** (pencil) pada baris yang diinginkan, ubah isian formulir di modal, lalu klik **Simpan Perubahan**. Fitur ubah tersedia untuk Pelanggan dan Staf. Untuk Obat, ubah data hanya dapat dilakukan melalui API.
+
 **Menghapus data:** klik tombol **Hapus** pada baris yang diinginkan, lalu konfirmasi pada kotak dialog.
 
-**Penanda kadaluarsa:** pada halaman Daftar Obat, baris obat yang tanggal kadaluarsanya sudah terlewat ditampilkan dengan latar merah.
+**Upload foto profil:** pada modal tambah/ubah Pelanggan atau Staf, pilih file foto (JPG/PNG/WebP, maks 2MB). Foto akan disimpan dan ditampilkan di tabel.
+
+**Penanda kadaluarsa:** pada halaman Daftar Obat, baris obat yang tanggal kadaluarsanya sudah terlewat ditampilkan dengan badge "Kadaluarsa".
 
 ---
 
@@ -421,13 +457,14 @@ Jika validasi gagal, API mengembalikan status **422** beserta rincian kesalahan 
 
 ### Menggunakan koleksi Postman
 
-Folder `postman` berisi koleksi dan environment yang siap diimpor.
+Folder `postman` berisi koleksi Postman yang siap diimpor:
+
+- `apotek.postman_collection.json` — koleksi request untuk semua endpoint API.
 
 1. Buka Postman, klik **Import**.
-2. Pilih file koleksi (`*.postman_collection.json`) dan file environment (`*.postman_environment.json`) dari folder `postman`.
-3. Pada pojok kanan atas Postman, pilih environment **Apotek Local**.
-4. Pastikan variabel `base_url` bernilai `http://127.0.0.1:8000/api`. Ubah port jika server dijalankan di port lain.
-5. Jalankan `php artisan serve`, lalu kirim request dari koleksi.
+2. Pilih file koleksi `apotek.postman_collection.json` dari folder `postman`.
+3. Pastikan variabel environment `base_url` bernilai `http://127.0.0.1:8000/api`. Ubah port jika server dijalankan di port lain.
+4. Jalankan `php artisan serve`, lalu kirim request dari koleksi.
 
 Urutan pengujian yang disarankan: POST (tambah) lalu GET (lihat) lalu PUT (ubah) lalu DELETE (hapus), dan bandingkan hasilnya dengan tampilan di halaman web.
 
