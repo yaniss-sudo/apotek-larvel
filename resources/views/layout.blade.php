@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>@yield('title', 'Beranda') · Aplikasi Apotek</title>
+  <title>@yield('title', 'Beranda') | Apotek</title>
   <script>
     try { if (localStorage.getItem('sidebarCollapsed') === '1') document.documentElement.classList.add('sidebar-collapsed'); } catch (e) {}
   </script>
@@ -11,12 +11,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
   <link href="{{ asset('css/apotek.css') }}" rel="stylesheet">
 </head>
 <body>
 <aside class="sidebar" id="sidebar">
-  <a class="logo" href="{{ url('/') }}"><i class="bi bi-heart-pulse-fill"></i><span>Apotek</span></a>
+  <a class="logo" href="{{ route('beranda') }}" title="Beranda"><x-logo /><span>Apotek</span></a>
   <div class="menu-label">Menu</div>
   <nav>
     <a href="{{ route('pelanggan.index') }}" title="Pelanggan" class="{{ request()->routeIs('pelanggan.*') ? 'active' : '' }}">
@@ -29,13 +30,14 @@
       <i class="bi bi-capsule"></i><span>Daftar Obat</span>
     </a>
   </nav>
+  <div class="side-foot"><strong>Kelompok 5</strong>TRKJ 2C, Sistem Terintegrasi</div>
 </aside>
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <div class="main">
   <header class="topbar">
     <button class="btn-toggle" id="sidebarToggle" type="button" aria-label="Buka/tutup menu"><i class="bi bi-list"></i></button>
-    <div class="crumb"><span>Apotek</span><i class="bi bi-chevron-right small"></i><strong>@yield('title')</strong></div>
+    <div class="crumb"><a href="{{ route('beranda') }}" class="text-reset text-decoration-none">Beranda</a><i class="bi bi-chevron-right small"></i><strong>@yield('title')</strong></div>
   </header>
 
   <main class="content">

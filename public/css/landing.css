@@ -1,0 +1,102 @@
+/* Halaman welcome & 404 — tanpa JavaScript, tanpa framework */
+:root {
+  --forest: #14281e;
+  --brand: #2f6b47;
+  --accent: #c4a05a;
+  --accent-hover: #d3b36f;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh; min-height: 100svh;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #f3f5f1;
+  background-color: var(--forest);
+  background-image:
+    linear-gradient(90deg, rgba(10,24,16,.88) 0%, rgba(10,24,16,.62) 38%, rgba(10,24,16,.12) 72%, rgba(10,24,16,0) 100%),
+    linear-gradient(0deg, rgba(10,24,16,.7) 0%, rgba(10,24,16,0) 38%),
+    url('../img/latar.jpg');
+  background-size: cover;
+  background-position: 68% 62%;
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.landing-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.25rem clamp(1.25rem, 5vw, 4rem);
+}
+.brand { display: inline-flex; align-items: center; gap: .65rem; text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: -.01em; }
+.logo-bg { fill: var(--brand); }
+.logo-k { fill: #fff; }
+.link-masuk {
+  text-decoration: none; font-weight: 600; font-size: .9rem;
+  padding: .5rem 1rem; border: 1px solid rgba(255,255,255,.4); border-radius: 8px;
+  transition: background .15s, border-color .15s;
+}
+.link-masuk:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.7); }
+
+.landing-main {
+  flex: 1;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 2rem clamp(1.25rem, 5vw, 4rem) 2.5rem;
+}
+.hero { max-width: 40rem; }
+.hero h1 {
+  margin: 0 0 1.1rem;
+  font-size: clamp(2.2rem, 5.2vw, 4rem);
+  font-weight: 700; line-height: 1.06; letter-spacing: -.03em;
+  text-wrap: balance;
+}
+.hero p { margin: 0 0 1.75rem; max-width: 34rem; font-size: 1.05rem; line-height: 1.65; color: rgba(243,245,241,.86); }
+.btn-masuk {
+  display: inline-block; text-decoration: none;
+  padding: .8rem 1.6rem; border-radius: 8px;
+  background: var(--accent); color: #1a1a12; font-weight: 700; font-size: .95rem;
+  transition: background .15s;
+}
+.btn-masuk:hover { background: var(--accent-hover); }
+
+.pintasan {
+  list-style: none; margin: 3rem 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 2rem;
+  max-width: 44rem;
+}
+.pintasan a {
+  display: block; text-decoration: none; height: 100%;
+  padding: 1rem 0 .25rem;
+  border-top: 1px solid rgba(255,255,255,.3);
+  transition: border-color .15s;
+}
+.pintasan a:hover { border-top-color: var(--accent); }
+.pintasan strong { display: block; font-size: .98rem; font-weight: 600; }
+.pintasan span { display: block; margin-top: .2rem; font-size: .85rem; color: rgba(243,245,241,.75); line-height: 1.45; }
+
+.landing-foot {
+  padding: 0 clamp(1.25rem, 5vw, 4rem) 1.25rem;
+  font-size: .78rem; color: rgba(243,245,241,.65);
+}
+
+/* ---- 404 ---- */
+.nf { max-width: 32rem; }
+.nf .kode { font-size: clamp(4.5rem, 14vw, 8rem); font-weight: 700; line-height: 1; letter-spacing: -.04em; color: var(--accent); margin: 0 0 .5rem; }
+.nf h1 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+.aksi { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+.btn-garis {
+  display: inline-block; text-decoration: none; font-weight: 600; font-size: .95rem;
+  padding: .8rem 1.4rem; border-radius: 8px; border: 1px solid rgba(255,255,255,.4);
+}
+.btn-garis:hover { background: rgba(255,255,255,.12); }
+
+@media (max-width: 640px) {
+  body { background-position: 72% 58%; background-image:
+    linear-gradient(0deg, rgba(10,24,16,.92) 0%, rgba(10,24,16,.6) 50%, rgba(10,24,16,.2) 100%),
+    url('../img/latar.jpg'); }
+  .pintasan { grid-template-columns: 1fr; gap: 0; margin-top: 2rem; }
+  .pintasan a { padding: .85rem 0; }
+  .btn-masuk { width: 100%; text-align: center; }
+}

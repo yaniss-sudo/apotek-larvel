@@ -44,7 +44,7 @@
             <div class="d-flex align-items-center gap-2">
               <x-avatar :nama="$d->nama" :foto="$d->foto" />
               <div>
-                <div class="fw-semibold">{{ $d->nama }}</div>
+                <button type="button" class="nama-link" data-bs-toggle="modal" data-bs-target="#detail-pelanggan-{{ $d->id }}">{{ $d->nama }}</button>
                 <div class="cell-sub">ID #{{ $d->id }}<span class="d-md-none"> · {{ $d->no_hp }}</span></div>
               </div>
             </div>
@@ -54,6 +54,7 @@
           <td class="d-none d-lg-table-cell"><div class="truncate" title="{{ $d->bio }}">{{ $d->bio ?: '-' }}</div></td>
           <td class="text-end col-aksi">
             <div class="d-flex justify-content-end gap-1">
+              <button type="button" class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#detail-pelanggan-{{ $d->id }}" title="Lihat detail"><i class="bi bi-eye"></i></button>
               <button type="button" class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#edit-pelanggan-{{ $d->id }}" title="Ubah">
                 <i class="bi bi-pencil"></i>
               </button>
@@ -172,6 +173,20 @@
       </form>
     </div>
   </div>
+</div>
+{{-- Card detail --}}
+<div class="modal fade detail-card" id="detail-pelanggan-{{ $d->id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="dc-banner"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button></div>
+    <div class="dc-avatar"><x-avatar :nama="$d->nama" :foto="$d->foto" :large="true" /></div>
+    <div class="dc-head"><h5>{{ $d->nama }}</h5><div class="cell-sub">ID #{{ $d->id }}</div></div>
+    <dl class="dc-list">
+      <div><dt>No HP</dt><dd>{{ $d->no_hp }}</dd></div>
+      <div><dt>Alamat</dt><dd>{{ $d->alamat }}</dd></div>
+      <div><dt>Bio</dt><dd>{{ $d->bio ?: '-' }}</dd></div>
+      <div><dt>Terdaftar</dt><dd>{{ $d->created_at?->format('d M Y') ?? '-' }}</dd></div>
+    </dl>
+  </div></div>
 </div>
 @endforeach
 @endsection
